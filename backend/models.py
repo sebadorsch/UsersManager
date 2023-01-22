@@ -15,7 +15,7 @@ class User(_db.Base):
 
   leads = _orm.relationship("Lead", back_populates="owner")
 
-  def verify_password(self, password, str):
+  def verify_password(self, password: str):
     return _hash.bcrypt.verify(password, self.hashed_password)
 
 
