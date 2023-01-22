@@ -1,14 +1,16 @@
-from fastapi import FastAPI
+import fastapi as _fastapi
+import sqlalchemy.orm as _orm
+import fastapi.security as _security
+import schemas as _schemas
+import services as _services
+
+app = _fastapi.FastAPI()
 
 
-app = FastAPI()
+@app.post("/api/users")
+async def create_user(user: _schemas.UserCreate, db: _orm.Session = _fastapi.Depends(_services.get_db)):
+    db_user = await _services.get_user_by_email(user.email, db)
+    if db_user:
+        raise _fastapi.HTTPException(status_code=400, detail="Email already in use")
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+    return await _services.create_user(user, db)

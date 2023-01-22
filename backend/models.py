@@ -31,4 +31,4 @@ class Lead(_db.Base):
   date_created = sqlalchemy.Column(sqlalchemy.DateTime, default=_dt.datetime.utcnow)
   date_last_updated = sqlalchemy.Column(sqlalchemy.DateTime, default=_dt.datetime.utcnow)
 
-  owner = _orm.relationship('User', back_populares='leads')
+  owner = _orm.relationship('User', back_populates='leads')
